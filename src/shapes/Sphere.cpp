@@ -2,10 +2,9 @@
 #include <cmath>
 #include "Sphere.hpp"
 
-Sphere::Sphere(): Shape() {
+Sphere::Sphere(): Shape(Model()) {
   center_ = Vector();
   radius_ = 1;
-  model_ = Model();
 }
 
 Sphere::Sphere(Vector center, float radius, Model model): Shape(model) {
@@ -55,8 +54,8 @@ bool Sphere::intersects(Vector origin, Vector coord) {
   return false;
 }
 
-void Sphere::transform(Matrix matrix, TransformType t_type) {
-  switch (t_type) {
+void Sphere::transform(Matrix matrix, TransformType tType) {
+  switch (tType) {
     case SCALE:
       radius_ *= matrix(0, 0);
       break;

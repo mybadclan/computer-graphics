@@ -20,11 +20,10 @@ class Shape {
     void setTMin(float tMin);
 
     virtual Vector surfaceNormal(Vector other);
-    virtual Vector surfaceNormal();
 
     virtual bool isValid();
     virtual bool intersects(Vector origin, Vector coord);
-    virtual void transform(Matrix matrix, TransformType type);
+    virtual void transform(Matrix matrix, TransformType tType);
 
 };
 

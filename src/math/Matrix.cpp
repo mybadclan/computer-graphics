@@ -20,7 +20,7 @@ float& Matrix::operator () (int i, int j) {
   return m[i][j];
 }
 
-Matrix Matrix::operator * (Matrix& other) {
+Matrix Matrix::operator * (Matrix other) {
   Matrix res;
 
   for (int i=0; i<size();i+=1) {
@@ -34,7 +34,7 @@ Matrix Matrix::operator * (Matrix& other) {
   return res;
 }
 
-Vector Matrix::operator *(Vector& other) {
+Vector Matrix::operator *(Vector other) {
   float ox, oy, oz;
   other.getXYZ(&ox, &oy, &oz);
 

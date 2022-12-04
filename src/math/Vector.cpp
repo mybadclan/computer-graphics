@@ -58,6 +58,19 @@ void Vector::getXYZW(float * x, float * y, float * z, float * w) {
   *w = w_;
 }
 
+void Vector::setXYZ(float x, float y, float z) {
+  x_ = x;
+  y_ = y;
+  z_ = z;
+}
+
+void Vector::setXYZW(float x, float y, float z, float w) {
+  x_ = x;
+  y_ = y;
+  z_ = z;
+  w_ = w;
+}
+
 Vector Vector::operator + (Vector other) {
   float x, y, z;
   other.getXYZ(&x, &y, &z);
@@ -74,7 +87,7 @@ Vector Vector::operator*(Vector other) {
   return Vector(x_*x, y_*y, z_*z);
 }
 
-Vector Vector::operator - (Vector& other) {
+Vector Vector::operator - (Vector other) {
   Vector negativeOther = other * -1;
 
   return (*this) + negativeOther;

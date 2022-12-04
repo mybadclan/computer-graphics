@@ -15,8 +15,8 @@ class Matrix {
     int size();
 
     float& operator () (int i, int j);
-    Matrix operator * (Matrix& other);
-    Vector operator * (Vector& other);
+    Matrix operator * (Matrix other);
+    Vector operator * (Vector other);
 
     static Matrix translate(float tx, float ty, float tz);
     static Matrix scale(float sx, float sy, float sz);

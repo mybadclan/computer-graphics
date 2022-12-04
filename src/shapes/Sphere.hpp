@@ -11,7 +11,6 @@ class Sphere: public Shape {
   private:
     Vector center_;
     float radius_;
-    Model model_;
 
   public:
     Sphere();
@@ -24,7 +23,7 @@ class Sphere: public Shape {
 
     virtual bool isValid() override;
     virtual bool intersects(Vector origin, Vector coord) override;
-    virtual void transform(Matrix matrix, TransformType t_type) override;
+    virtual void transform(Matrix matrix, TransformType tType) override;
 
     void print();
 };

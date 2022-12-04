@@ -16,29 +16,29 @@
 
 #include "shapes/Shape.hpp"
 #include "shapes/Sphere.hpp"
+#include "shapes/Plane.hpp"
+#include "shapes/Cube.hpp"
 #include "shapes/Ray.hpp"
 
-#define WIDTH_SCREEN 500
-#define HEIGHT_SCREEN 500
-#define WIDTH_CANVAS 500
-#define HEIGHT_CANVAS 500
+#define WIDTH_CANVAS 800
+#define HEIGHT_CANVAS 800
 
 // HEIGHT_CANVAS * WIDTH_CANVAS * 3
-#define CANVAS_ARRAY_SIZE 500 * 500
+#define CANVAS_ARRAY_SIZE HEIGHT_CANVAS * WIDTH_CANVAS
 
 using namespace std;
 
 int main() {
   SDLEngine sdlEngine{
     "Trabalho CG",
-    WIDTH_SCREEN,
-    HEIGHT_SCREEN,
+    WIDTH_CANVAS,
+    HEIGHT_CANVAS,
     WIDTH_CANVAS,
     HEIGHT_CANVAS
   };
 
   Color pixels[CANVAS_ARRAY_SIZE];
-  SDL_Event e;
+  SDL_Event event;
   bool quit = false;
 
   for (int i = 0; i < CANVAS_ARRAY_SIZE; i++)
@@ -71,43 +71,62 @@ int main() {
   Sphere sphere2 { Vector(0, 0, -120), 15, m2 };
   Sphere sphere3 { Vector(0, 0, -150), 15, m3 };
 
+  Plane plane1 { Vector(0, -50, 0), Vector(0, 1, 0), m2 };
+
+  Cube cube1 { m3 };
+  Cube cube2 { m1 };
+  Cube cube3 { m2 };
+  Cube cube4 { m1 };
+
+  Matrix auxM1 = Matrix::translate(0, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
+  Matrix auxM2 = Matrix::translate(-20, -50, -100) * Matrix::scale(10, 10, 10);
+  Matrix auxM3 = Matrix::translate(20, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
+  Matrix auxM4 = Matrix::translate(0, 20, -100) * Matrix::scale(10, 10, 10);
+
+
+  cube1.transform(auxM1, SCALE);
+  cube2.transform(auxM2, SCALE);
+  cube3.transform(auxM3, SCALE);
+  cube4.transform(auxM4, SCALE);
+
   scene.push(&sphere1);
-  scene.push(&sphere2);
-  scene.push(&sphere3);
+  scene.push(&plane1);
+  scene.push(&cube1);
+  scene.push(&cube2);
+  scene.push(&cube3);
+  scene.push(&cube4);
+
+  // scene.push(&sphere3);
 
   PontualLS ls1 { Vector(-100, 140, -20), Vector(0.7, 0.7, 0.7) };
 
-  Vector origin = Vector();
-  Vector d = Vector(0, 0, -30);
+  scene.pushLightSource(&ls1);
 
-  scene.paint(origin, d).print();
+  for (int x = 0; x < WIDTH_CANVAS; x+=1) {
+    for (int y = 0; y < HEIGHT_CANVAS; y+=1) {
+      Vector coord = canvas.toWindow(Vector(x, y));
+      Vector origin = scene.getRay().getCamera();
 
-  // while (!quit)
-  // {
-  //   while (SDL_PollEvent(&e))
-  //   {
-  //     if (e.type == SDL_QUIT)
-  //       quit = true;
-  //   }
+      Color color = scene.paint(origin, coord);
+      int pos = x + (HEIGHT_CANVAS * y);
 
-  //   for (int x = 0; x < WIDTH_CANVAS; x+=1) {
-  //     for (int y = 0; y < HEIGHT_CANVAS; y+=1) {
-  //       Vector windowCoord = canvas.toWindow(Vector(x, y));
-  //       Vector origin = scene.getRay().getCamera();
+      pixels[pos] = color;
+    }
+  }
 
-  //       if (sphere1.intersects(origin, windowCoord)) {
-  //         Color color = sphere1.getModel().getColor();
+  sdlEngine.atualizarCanvas((int *) pixels);
 
-  //         int pos = x + (HEIGHT_CANVAS * y);
+  while (!quit)
+  {
+    while (SDL_PollEvent(&event))
+    {
+      if (event.type == SDL_QUIT)
+        quit = true;
+    }
 
-  //         pixels[pos] = color;
-  //       }
-  //     }
-  //   }
-
-  //   sdlEngine.atualizarCanvas((int *)pixels);
-  //   sdlEngine.atualizarJanela();
-  // }
+    // sdlEngine.atualizarCanvas((int *)pixels);
+    sdlEngine.atualizarJanela();
+  }
 
   return 0;
 }

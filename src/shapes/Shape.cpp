@@ -24,10 +24,6 @@ Vector Shape::surfaceNormal(Vector other) {
   return Vector();
 }
 
-Vector Shape::surfaceNormal() {
-  return Vector();
-}
-
 bool Shape::isValid() {
   return true;
 }
@@ -36,5 +32,5 @@ bool Shape::intersects(Vector origin, Vector coord) {
   return false;
 }
 
-void Shape::transform(Matrix matrix, TransformType type) {}
+void Shape::transform(Matrix matrix, TransformType tType) {}
 

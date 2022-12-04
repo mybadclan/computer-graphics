@@ -22,10 +22,13 @@ class Vector {
     void getXYZ(float * x, float * y, float * z);
     void getXYZW(float * x, float * y, float * z, float * w);
 
+    void setXYZ(float x, float y, float z);
+    void setXYZW(float x, float y, float z, float w);
+
     Vector operator + (Vector other);
     Vector operator * (float alpha);
     Vector operator * (Vector other);
-    Vector operator - (Vector& other);
+    Vector operator - (Vector other);
     Vector operator / (float alpha);
 
     float norm();
