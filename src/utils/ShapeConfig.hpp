@@ -10,18 +10,18 @@ class ShapeConfig {
   private:
     Vector centerBase_;
     Vector direction_;
-    float height_;
-    float radius_;
+    double height_;
+    double radius_;
 
   public:
     ShapeConfig();
-    ShapeConfig(Vector centerBase, Vector direction, float height, float radius);
+    ShapeConfig(Vector centerBase, Vector direction, double height, double radius);
 
     Vector getCenterBase();
     Vector getDirection();
-    float getHeight();
-    float getRadius();
-    void getScalarProps(float* height, float* radius);
+    double getHeight();
+    double getRadius();
+    void getScalarProps(double* height, double* radius);
 
     void transform(Matrix matrix, TransformType tType);
 };

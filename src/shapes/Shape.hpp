@@ -9,15 +9,15 @@ enum TransformType { TRANSLATE, SCALE, SKEW, REFLECT, ROTATE, MIX };
 class Shape {
   private:
     Model model_;
-    float tMin_;
+    double tMin_;
 
   public:
     Shape();
     Shape(Model model);
 
     Model getModel();
-    void getTMin(float *tMin);
-    void setTMin(float tMin);
+    void getTMin(double *tMin);
+    void setTMin(double tMin);
 
     virtual Vector surfaceNormal(Vector other);
 

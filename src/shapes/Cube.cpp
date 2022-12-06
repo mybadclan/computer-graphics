@@ -57,7 +57,7 @@ Vector Cube::surfaceNormal(Vector other) {
 }
 
 bool Cube::intersects(Vector origin, Vector coord) {
-  float tMin = std::numeric_limits<float>::max();
+  double tMin = std::numeric_limits<double>::max();
   bool intersected = false;
   Vector intersectedNormal = Vector();
 
@@ -80,7 +80,7 @@ bool Cube::intersects(Vector origin, Vector coord) {
     Vector d = (coord - origin).normalized();
 
     if (plane.intersects(origin, d)) {
-      float* auxTMin = new float;
+      double* auxTMin = new double;
       plane.getTMin(auxTMin);
 
       Vector pI = origin + (d * (*auxTMin));
@@ -88,12 +88,12 @@ bool Cube::intersects(Vector origin, Vector coord) {
       Vector auxP1 = p1 - pI;
       Vector auxP0 = p0 - pI;
 
-      float area = r1xr2.dotProduct(&n);
-      float c1 = (p0 - pI).crossProduct(&auxP1).dotProduct(&n) / area;
-      float c2 = (p2 - pI).crossProduct(&auxP0).dotProduct(&n) / area;
-      float c3 = 1 - c1 - c2;
+      double area = r1xr2.dotProduct(&n);
+      double c1 = (p0 - pI).crossProduct(&auxP1).dotProduct(&n) / area;
+      double c2 = (p2 - pI).crossProduct(&auxP0).dotProduct(&n) / area;
+      double c3 = 1 - c1 - c2;
 
-      if (c1 > 0.0f && c2 > 0.0f && c3 > 0.0f && (*auxTMin) < tMin) {
+      if (c1 > 0.0 && c2 > 0.0 && c3 > 0.0 && (*auxTMin) < tMin) {
         intersectedNormal = n;
         tMin = (*auxTMin);
         intersected = true;
@@ -113,7 +113,7 @@ void Cube::transform(Matrix matrix, TransformType tType) {
   for (int i=0; i<(int)vertex_.size(); i+=1) {
     Vector result = matrix * vertex_.at(i);
 
-    float x, y, z;
+    double x, y, z;
     result.getXYZ(&x, &y, &z);
     vertex_.at(i).setXYZ(x, y, z);
   }

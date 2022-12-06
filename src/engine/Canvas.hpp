@@ -10,8 +10,8 @@ class Canvas {
     int height_;
     Window window_;
 
-    float dx_;
-    float dy_;
+    double dx_;
+    double dy_;
 
   public:
     Canvas(Window window, int width, int height);
@@ -20,8 +20,8 @@ class Canvas {
 
     int getWidth();
     int getHeight();
-    float getDx();
-    float getDy();
+    double getDx();
+    double getDy();
 
     Window getWindow();
 

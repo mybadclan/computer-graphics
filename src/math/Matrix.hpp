@@ -7,33 +7,33 @@
 
 class Matrix {
   private:
-    float m[4][4];
+    double m[4][4];
 
   public:
     Matrix();
 
     int size();
 
-    float& operator () (int i, int j);
+    double& operator () (int i, int j);
     Matrix operator * (Matrix other);
     Vector operator * (Vector other);
 
-    static Matrix translate(float tx, float ty, float tz);
-    static Matrix scale(float sx, float sy, float sz);
+    static Matrix translate(double tx, double ty, double tz);
+    static Matrix scale(double sx, double sy, double sz);
 
-    static Matrix rotateX(float teta);
-    static Matrix rotateY(float teta);
-    static Matrix rotateZ(float teta);
+    static Matrix rotateX(double teta);
+    static Matrix rotateY(double teta);
+    static Matrix rotateZ(double teta);
 
     static Matrix reflectXY();
     static Matrix reflectYZ();
     static Matrix reflectXZ();
 
-    static Matrix skewXY(float gama);
-    static Matrix skewYZ(float gama);
-    static Matrix skewZY(float gama);
-    static Matrix skewXZ(float gama);
-    static Matrix skewZX(float gama);
+    static Matrix skewXY(double gama);
+    static Matrix skewYZ(double gama);
+    static Matrix skewZY(double gama);
+    static Matrix skewXZ(double gama);
+    static Matrix skewZX(double gama);
 
     void print();
 };

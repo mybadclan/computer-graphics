@@ -5,7 +5,7 @@ Model::Model() {
   color_ = Color();
   Vector k = Vector();
   kd_ = ke_ = ka_ = k;
-  shineness_ = 1.0f;
+  shineness_ = 1.0;
 }
 
 Model::Model(
@@ -13,7 +13,7 @@ Model::Model(
   Vector kd,
   Vector ke,
   Vector ka,
-  float shineness
+  double shineness
 ) {
   color_ = color;
   kd_ = kd;
@@ -23,7 +23,7 @@ Model::Model(
   texture_ = false;
 }
 
-Model::Model(Color color, Vector k, float shineness) {
+Model::Model(Color color, Vector k, double shineness) {
   color_ = color;
   kd_ = k;
   ke_ = k;
@@ -36,7 +36,7 @@ Color Model::getColor() {
   return color_;
 }
 
-float Model::getShineness() {
+double Model::getShineness() {
   return shineness_;
 }
 

@@ -10,14 +10,14 @@
 class Sphere: public Shape {
   private:
     Vector center_;
-    float radius_;
+    double radius_;
 
   public:
     Sphere();
-    Sphere(Vector center, float radius, Model model);
+    Sphere(Vector center, double radius, Model model);
 
     Vector getCenter();
-    float getRadius();
+    double getRadius();
 
     virtual Vector surfaceNormal(Vector other) override;
 

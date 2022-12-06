@@ -32,12 +32,12 @@ void Color::getRGB(int* r, int* g, int* b) {
   *b = b_;
 }
 
-Color Color::operator *(float alpha) {
+Color Color::operator *(double alpha) {
   return Color(r_*alpha, g_*alpha, b_*alpha);
 }
 
 Color Color::operator *(Vector other) {
-  float x, y, z;
+  double x, y, z;
   other.getXYZ(&x, &y, &z);
 
   return Color(r_*x, g_*y, b_*z);

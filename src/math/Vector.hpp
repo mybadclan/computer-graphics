@@ -5,34 +5,34 @@
 
 class Vector {
   private:
-    float x_, y_, z_, w_;
+    double x_, y_, z_, w_;
 
   public:
 
     Vector();
-    Vector(float x, float y);
-    Vector(float x, float y, float z);
-    Vector(float x, float y, float z, float w);
+    Vector(double x, double y);
+    Vector(double x, double y, double z);
+    Vector(double x, double y, double z, double w);
 
-    float getX();
-    float getY();
-    float getZ();
-    float getW();
+    double getX();
+    double getY();
+    double getZ();
+    double getW();
 
-    void getXYZ(float * x, float * y, float * z);
-    void getXYZW(float * x, float * y, float * z, float * w);
+    void getXYZ(double * x, double * y, double * z);
+    void getXYZW(double * x, double * y, double * z, double * w);
 
-    void setXYZ(float x, float y, float z);
-    void setXYZW(float x, float y, float z, float w);
+    void setXYZ(double x, double y, double z);
+    void setXYZW(double x, double y, double z, double w);
 
     Vector operator + (Vector other);
-    Vector operator * (float alpha);
+    Vector operator * (double alpha);
     Vector operator * (Vector other);
     Vector operator - (Vector other);
-    Vector operator / (float alpha);
+    Vector operator / (double alpha);
 
-    float norm();
-    float dotProduct(Vector* other);
+    double norm();
+    double dotProduct(Vector* other);
     Vector crossProduct(Vector* other);
 
     Vector normalized();

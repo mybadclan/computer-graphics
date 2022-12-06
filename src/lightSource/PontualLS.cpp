@@ -13,13 +13,13 @@ Color PontualLS::iluminate(Vector pI, Vector d, Vector n, Model model) {
   Vector ambt = ia * model.getKa();
 
   Vector l = (position_ - pI).normalized();
-  float ln = l.dotProduct(&n);
-  Vector dfs = (id * model.getKd()) * std::max(0.0f, ln);
+  double ln = l.dotProduct(&n);
+  Vector dfs = (id * model.getKd()) * std::max(0.0, ln);
 
-  Vector r = (n * 2.0f * ln) - l;
-  float rv = r.dotProduct(&d);
+  Vector r = (n * 2 * ln) - l;
+  double rv = r.dotProduct(&d);
 
-  float auxMax = std::pow(std::max(0.0f, rv), 2);
+  double auxMax = std::pow(std::max(0.0, rv), model.getShineness());
   Vector spclr = (ie * model.getKe()) * auxMax;
 
   return (model.getColor()) * (ambt + dfs + spclr);

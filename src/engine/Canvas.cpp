@@ -6,17 +6,17 @@ Canvas::Canvas(Window window, int width, int height) {
   height_ = height;
   window_ = window;
 
-  dx_ = (float)window.getWidth() / width;
-  dy_ = (float)window.getHeight() / height;
+  dx_ = (double)window.getWidth() / width;
+  dy_ = (double)window.getHeight() / height;
 }
 
 Vector Canvas::toWindow(Vector worldCoord) {
-  float x, y, z;
+  double x, y, z;
   worldCoord.getXYZ(&x, &y, &z);
 
-  float cx = (-window_.getWidth()/2) + (dx_/2) + (dx_*x);
-  float cy = (window_.getHeight()/2) - (dy_/2) - (dy_*y);
-  float cz = window_.getDistance();
+  double cx = (-window_.getWidth()/2) + (dx_/2) + (dx_*x);
+  double cy = (window_.getHeight()/2) - (dy_/2) - (dy_*y);
+  double cz = window_.getDistance();
 
   return Vector(cx, cy, cz);
 }
@@ -29,11 +29,11 @@ int Canvas::getHeight() {
   return height_;
 }
 
-float Canvas::getDx() {
+double Canvas::getDx() {
   return dx_;
 }
 
-float Canvas::getDy() {
+double Canvas::getDy() {
   return dy_;
 }
 

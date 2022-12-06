@@ -8,63 +8,63 @@ Vector::Vector() {
   w_ = 1;
 }
 
-Vector::Vector(float x, float y) {
+Vector::Vector(double x, double y) {
   x_ = x;
   y_ = y;
   z_ = 0;
   w_ = 1;
 }
 
-Vector::Vector(float x, float y, float z) {
+Vector::Vector(double x, double y, double z) {
   x_ = x;
   y_ = y;
   z_ = z;
   w_ = 1;
 }
 
-Vector::Vector(float x, float y, float z, float w) {
+Vector::Vector(double x, double y, double z, double w) {
   x_ = x;
   y_ = y;
   z_ = z;
   w_ = w;
 }
 
-float Vector::getX() {
+double Vector::getX() {
   return x_;
 }
 
-float Vector::getY() {
+double Vector::getY() {
   return y_;
 }
 
-float Vector::getZ() {
+double Vector::getZ() {
   return z_;
 }
 
-float Vector::getW() {
+double Vector::getW() {
   return w_;
 }
 
-void Vector::getXYZ(float * x, float * y, float * z) {
+void Vector::getXYZ(double * x, double * y, double * z) {
   *x = x_;
   *y = y_;
   *z = z_;
 }
 
-void Vector::getXYZW(float * x, float * y, float * z, float * w) {
+void Vector::getXYZW(double * x, double * y, double * z, double * w) {
   *x = x_;
   *y = y_;
   *z = z_;
   *w = w_;
 }
 
-void Vector::setXYZ(float x, float y, float z) {
+void Vector::setXYZ(double x, double y, double z) {
   x_ = x;
   y_ = y;
   z_ = z;
 }
 
-void Vector::setXYZW(float x, float y, float z, float w) {
+void Vector::setXYZW(double x, double y, double z, double w) {
   x_ = x;
   y_ = y;
   z_ = z;
@@ -72,17 +72,17 @@ void Vector::setXYZW(float x, float y, float z, float w) {
 }
 
 Vector Vector::operator + (Vector other) {
-  float x, y, z;
+  double x, y, z;
   other.getXYZ(&x, &y, &z);
   return Vector(x_ + x, y_ + y, z_ + z);
 }
 
-Vector Vector::operator * (float alpha) {
+Vector Vector::operator * (double alpha) {
   return Vector(x_*alpha, y_*alpha, z_*alpha);
 }
 
 Vector Vector::operator*(Vector other) {
-  float x, y, z;
+  double x, y, z;
   other.getXYZ(&x, &y, &z);
   return Vector(x_*x, y_*y, z_*z);
 }
@@ -93,23 +93,23 @@ Vector Vector::operator - (Vector other) {
   return (*this) + negativeOther;
 }
 
-Vector Vector::operator / (float alpha) {
+Vector Vector::operator / (double alpha) {
   return (*this)*(1/alpha);
 }
 
-float Vector::norm() {
+double Vector::norm() {
   return std::sqrt(dotProduct(this));
 }
 
-float Vector::dotProduct(Vector* other) {
-  float x, y, z;
+double Vector::dotProduct(Vector* other) {
+  double x, y, z;
   (*other).getXYZ(&x, &y, &z);
 
   return x_*x + y_*y + z_*z;
 }
 
 Vector Vector::crossProduct(Vector* other) {
-  float x, y, z;
+  double x, y, z;
   (*other).getXYZ(&x, &y, &z);
 
   return Vector(
@@ -121,11 +121,11 @@ Vector Vector::crossProduct(Vector* other) {
 
 
 Vector Vector::normalized() {
-  float norm = this->norm();
+  double norm = this->norm();
 
-  float x = x_ / norm;
-  float y = y_ / norm;
-  float z = z_ / norm;
+  double x = x_ / norm;
+  double y = y_ / norm;
+  double z = z_ / norm;
 
   return Vector(x, y, z);
 }

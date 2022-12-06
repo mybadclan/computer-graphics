@@ -12,11 +12,11 @@ Model Shape::getModel() {
   return model_;
 }
 
-void Shape::getTMin(float* tMin) {
+void Shape::getTMin(double* tMin) {
   *tMin = tMin_;
 }
 
-void Shape::setTMin(float tMin) {
+void Shape::setTMin(double tMin) {
   tMin_ = tMin;
 }
 

@@ -8,7 +8,7 @@ Window::Window() {
   distance_ = -20;
 }
 
-Window::Window(int width, int height, float distance) {
+Window::Window(int width, int height, double distance) {
   width_ = width;
   height_ = height;
   distance_ = distance;
@@ -22,7 +22,7 @@ int Window::getHeight() {
   return height_;
 }
 
-float Window::getDistance() {
+double Window::getDistance() {
   return distance_;
 }
 

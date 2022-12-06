@@ -16,7 +16,7 @@ int Matrix::size() {
   return 4;
 }
 
-float& Matrix::operator () (int i, int j) {
+double& Matrix::operator () (int i, int j) {
   return m[i][j];
 }
 
@@ -35,17 +35,17 @@ Matrix Matrix::operator * (Matrix other) {
 }
 
 Vector Matrix::operator *(Vector other) {
-  float ox, oy, oz;
+  double ox, oy, oz;
   other.getXYZ(&ox, &oy, &oz);
 
-  float x = m[0][0] * ox + m[0][1] * oy + m[0][2] * oz + m[0][3];
-  float y = m[1][0] * ox + m[1][1] * oy + m[1][2] * oz + m[1][3];
-  float z = m[2][0] * ox + m[2][1] * oy + m[2][2] * oz + m[2][3];
+  double x = m[0][0] * ox + m[0][1] * oy + m[0][2] * oz + m[0][3];
+  double y = m[1][0] * ox + m[1][1] * oy + m[1][2] * oz + m[1][3];
+  double z = m[2][0] * ox + m[2][1] * oy + m[2][2] * oz + m[2][3];
 
   return Vector(x, y, z);
 }
 
-Matrix Matrix::translate(float tx, float ty, float tz) {
+Matrix Matrix::translate(double tx, double ty, double tz) {
   Matrix matrix = Matrix();
 
   matrix(0, 3) = tx;
@@ -55,7 +55,7 @@ Matrix Matrix::translate(float tx, float ty, float tz) {
   return matrix;
 }
 
-Matrix Matrix::scale(float sx, float sy, float sz) {
+Matrix Matrix::scale(double sx, double sy, double sz) {
   Matrix matrix = Matrix();
 
   matrix(0, 0) = sx;
@@ -69,13 +69,13 @@ Matrix Matrix::scale(float sx, float sy, float sz) {
 // x  ---> teta
 // x = pi * teta / 180
 
-Matrix Matrix::rotateX(float teta) {
-  float radians = (M_PI * teta) / 180;
+Matrix Matrix::rotateX(double teta) {
+  double radians = (M_PI * teta) / 180;
 
   Matrix matrix = Matrix();
 
-  float c = std::cos(radians);
-  float s = std::sin(radians);
+  double c = std::cos(radians);
+  double s = std::sin(radians);
 
   matrix(1, 1) = c;
   matrix(1, 2) = -s;
@@ -85,13 +85,13 @@ Matrix Matrix::rotateX(float teta) {
   return matrix;
 }
 
-Matrix Matrix::rotateY(float teta) {
-  float radians = (M_PI * teta) / 180;
+Matrix Matrix::rotateY(double teta) {
+  double radians = (M_PI * teta) / 180;
 
   Matrix matrix = Matrix();
 
-  float c = std::cos(radians);
-  float s = std::sin(radians);
+  double c = std::cos(radians);
+  double s = std::sin(radians);
 
   matrix(0, 0) = c;
   matrix(0, 2) = s;
@@ -101,13 +101,13 @@ Matrix Matrix::rotateY(float teta) {
   return matrix;
 }
 
-Matrix Matrix::rotateZ(float teta) {
-  float radians = (M_PI * teta) / 180;
+Matrix Matrix::rotateZ(double teta) {
+  double radians = (M_PI * teta) / 180;
 
   Matrix matrix = Matrix();
 
-  float c = std::cos(radians);
-  float s = std::sin(radians);
+  double c = std::cos(radians);
+  double s = std::sin(radians);
 
   matrix(0, 0) = c;
   matrix(0, 1) = -s;
@@ -138,9 +138,9 @@ Matrix Matrix::reflectXZ() {
   return matrix;
 }
 
-Matrix Matrix::skewXY(float gama) {
-  float radians = (M_PI * gama) / 180;
-  float t = std::tan(radians);
+Matrix Matrix::skewXY(double gama) {
+  double radians = (M_PI * gama) / 180;
+  double t = std::tan(radians);
 
   Matrix matrix = Matrix();
   matrix(1, 0) = t;
@@ -148,9 +148,9 @@ Matrix Matrix::skewXY(float gama) {
   return matrix;
 }
 
-Matrix Matrix::skewYZ(float gama) {
-  float radians = (M_PI * gama) / 180;
-  float t = std::tan(radians);
+Matrix Matrix::skewYZ(double gama) {
+  double radians = (M_PI * gama) / 180;
+  double t = std::tan(radians);
 
   Matrix matrix = Matrix();
   matrix(2, 1) = t;
@@ -158,9 +158,9 @@ Matrix Matrix::skewYZ(float gama) {
   return matrix;
 }
 
-Matrix Matrix::skewZY(float gama) {
-  float radians = (M_PI * gama) / 180;
-  float t = std::tan(radians);
+Matrix Matrix::skewZY(double gama) {
+  double radians = (M_PI * gama) / 180;
+  double t = std::tan(radians);
 
   Matrix matrix = Matrix();
   matrix(1, 2) = t;
@@ -168,9 +168,9 @@ Matrix Matrix::skewZY(float gama) {
   return matrix;
 }
 
-Matrix Matrix::skewXZ(float gama) {
-  float radians = (M_PI * gama) / 180;
-  float t = std::tan(radians);
+Matrix Matrix::skewXZ(double gama) {
+  double radians = (M_PI * gama) / 180;
+  double t = std::tan(radians);
 
   Matrix matrix = Matrix();
   matrix(2, 0) = t;
@@ -178,9 +178,9 @@ Matrix Matrix::skewXZ(float gama) {
   return matrix;
 }
 
-Matrix Matrix::skewZX(float gama) {
-  float radians = (M_PI * gama) / 180;
-  float t = std::tan(radians);
+Matrix Matrix::skewZX(double gama) {
+  double radians = (M_PI * gama) / 180;
+  double t = std::tan(radians);
 
   Matrix matrix = Matrix();
   matrix(0, 2) = t;

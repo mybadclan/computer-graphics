@@ -7,7 +7,7 @@ Sphere::Sphere(): Shape(Model()) {
   radius_ = 1;
 }
 
-Sphere::Sphere(Vector center, float radius, Model model): Shape(model) {
+Sphere::Sphere(Vector center, double radius, Model model): Shape(model) {
   center_ = center;
   radius_ = radius;
 }
@@ -16,7 +16,7 @@ Vector Sphere::getCenter() {
   return center_;
 }
 
-float Sphere::getRadius() {
+double Sphere::getRadius() {
   return radius_;
 }
 
@@ -34,19 +34,19 @@ bool Sphere::intersects(Vector origin, Vector coord) {
   Vector d = (coord - origin).normalized();
 
   // a = 1
-  float b = 2*d.dotProduct(&w);
-  float c = w.dotProduct(&w) - std::pow(radius_, 2);
-  float delta = std::pow(b, 2) - 4*c;
+  double b = 2*d.dotProduct(&w);
+  double c = w.dotProduct(&w) - std::pow(radius_, 2);
+  double delta = std::pow(b, 2) - 4*c;
 
   if (delta < 0) return false;
 
-  float sqrtDelta = std::sqrt(delta);
+  double sqrtDelta = std::sqrt(delta);
 
-  float t1 = (-b + sqrtDelta) / 2;
-  float t2 = (-b - sqrtDelta) / 2;
-  float tMin = std::min(t1, t2);
+  double t1 = (-b + sqrtDelta) / 2;
+  double t2 = (-b - sqrtDelta) / 2;
+  double tMin = std::min(t1, t2);
 
-  if (tMin > 0.0001f) {
+  if (tMin > 0.0001) {
     Shape::setTMin(tMin);
     return true;
   }

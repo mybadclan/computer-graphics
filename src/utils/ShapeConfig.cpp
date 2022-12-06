@@ -7,7 +7,7 @@ ShapeConfig::ShapeConfig() {
   radius_ = 1;
 }
 
-ShapeConfig::ShapeConfig(Vector centerBase, Vector direction, float height, float radius) {
+ShapeConfig::ShapeConfig(Vector centerBase, Vector direction, double height, double radius) {
   centerBase_ = centerBase;
   direction_ = direction;
   height_ = height;
@@ -22,15 +22,15 @@ Vector ShapeConfig::getDirection() {
   return direction_;
 }
 
-float ShapeConfig::getHeight() {
+double ShapeConfig::getHeight() {
   return height_;
 }
 
-float ShapeConfig::getRadius() {
+double ShapeConfig::getRadius() {
   return radius_;
 }
 
-void ShapeConfig::getScalarProps(float* height, float* radius) {
+void ShapeConfig::getScalarProps(double* height, double* radius) {
   *height = height_;
   *radius = radius_;
 }

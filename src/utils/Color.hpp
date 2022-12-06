@@ -18,7 +18,7 @@ class Color {
     int getB();
     void getRGB(int* r, int* g, int* b);
 
-    Color operator * (float alpha);
+    Color operator * (double alpha);
     Color operator * (Vector other);
     Color operator * (Color other);
 

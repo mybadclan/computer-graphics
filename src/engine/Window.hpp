@@ -5,15 +5,15 @@ class Window {
   private:
     int width_;
     int height_;
-    float distance_;
+    double distance_;
 
   public:
     Window();
-    Window(int width, int height, float distance);
+    Window(int width, int height, double distance);
 
     int getWidth();
     int getHeight();
-    float getDistance();
+    double getDistance();
 
     void print();
 };

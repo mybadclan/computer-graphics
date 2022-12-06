@@ -23,22 +23,21 @@ Cylinder::Cylinder(ShapeConfig props, Model model): Shape(model) {
 bool Cylinder::inShell_(Vector other) {
   Vector centerBase = props_.getCenterBase();
   Vector direction = props_.getDirection();
-  float height = props_.getHeight();
-  float aux = (other - centerBase).dotProduct(&direction);
-
-  return aux > 0.0f && aux < height;
+  double height = props_.getHeight();
+  double aux = (other - centerBase).dotProduct(&direction);
+  return aux >= 0 && aux <= height;
 }
 
 bool Cylinder::inBase_(Vector other, bool top) {
   Vector centerBase = props_.getCenterBase();
   Vector direction = props_.getDirection();
-  float height, radius;
+  double height, radius;
   props_.getScalarProps(&height, &radius);
 
   Vector centerTop = centerBase + (direction * height);
 
   Vector c = top ? centerTop : centerBase;
-  float size = (other - c).norm();
+  double size = (other - c).norm();
 
   return size <= radius;
 }
@@ -48,9 +47,9 @@ Vector Cylinder::calcN_(Vector other) {
   Vector centerBase = props_.getCenterBase();
 
   Vector cp = other - centerBase;
-  Vector ca = direction * (other - centerBase).dotProduct(&direction);
+  Vector ca = direction * (cp).dotProduct(&direction);
 
-  return (cp - ca) / props_.getRadius();
+  return (cp - ca).normalized();
 }
 
 ShapeConfig Cylinder::getProps() {
@@ -62,7 +61,7 @@ Vector Cylinder::surfaceNormal(Vector other) {
 }
 
 bool Cylinder::intersects(Vector origin, Vector coord) {
-  float height, radius;
+  double height, radius;
   props_.getScalarProps(&height, &radius);
 
   Vector direction = props_.getDirection();
@@ -74,37 +73,37 @@ bool Cylinder::intersects(Vector origin, Vector coord) {
   Vector v = (origin - centerBase) - (direction * (origin - centerBase).dotProduct(&direction));
   Vector w = d - (direction * d.dotProduct(&direction));
 
-  float a = w.dotProduct(&w);
-  float b = v.dotProduct(&w);
-  float c = v.dotProduct(&v) - (radius*radius);
-  float delta = b*b - a*c;
+  double a = w.dotProduct(&w);
+  double b = v.dotProduct(&w);
+  double c = v.dotProduct(&v) - (radius*radius);
+  double delta = b*b - a*c;
 
-  if (delta < 0.0f) {
+  if (delta < 0) {
     return false;
   }
 
-  float sqrtDelta = std::sqrt(delta);
-  float t1 = (-b + sqrtDelta) / a;
-  float t2 = (-b - sqrtDelta) / a;
+  double sqrtDelta = std::sqrt(delta);
+  double t1 = (-b + sqrtDelta) / a;
+  double t2 = (-b - sqrtDelta) / a;
 
   Vector p1 = origin + (d * t1);
   Vector p2 = origin + (d * t2);
 
-  if (inShell_(p1) && inShell_(p2)) {
-    float t = t1 < t2 ? t1 : t2;
+  if (inShell_(p1) && inShell_(p2) && delta > 0) {
+    double t = t1 < t2 ? t1 : t2;
     Vector pI = t1 < t2 ? p1 : p2;
 
-    if (t > 0.0001f) {
+    if (t > 0) {
       n_ = calcN_(pI);
       setTMin(t);
       return true;
     }
   }
 
-  float tMin;
+  double tMin;
 
   if (inShell_(p1)) tMin = t1;
-  if (inShell_(p2) && t2 < t1) tMin = t2;
+  if (inShell_(p2) && t2 < tMin) tMin = t2;
 
   bool intersectBase = false;
 
@@ -112,22 +111,24 @@ bool Cylinder::intersects(Vector origin, Vector coord) {
   Plane planeTop  { centerTop, direction };
 
   if (planeBase.intersects(origin, coord)) {
-    float t;
+    double t;
     planeBase.getTMin(&t);
 
-    if (t > 0.0001f && t < tMin) {
-      Vector pI = origin + (d * t);
-      tMin = t; n_ = direction * -1; intersectBase = inBase_(pI, false);
+    Vector pI = origin + (d * t);
+    bool auxIntersect = inBase_(pI, false);
+    if (t > 0 && t < tMin && auxIntersect) {
+      tMin = t; n_ = direction * -1; intersectBase = auxIntersect;
     }
   }
 
   if (planeTop.intersects(origin, coord)) {
-    float t;
+    double t;
     planeTop.getTMin(&t);
 
-    if (t > 0.0001f && t < tMin) {
-      Vector pI = origin + (d * t);
-      tMin = t; n_ = direction; intersectBase = inBase_(pI, true);
+    Vector pI = origin + (d * t);
+    bool auxIntersect = inBase_(pI, true);
+    if (t > 0 && t < tMin && auxIntersect) {
+      tMin = t; n_ = direction; intersectBase = auxIntersect;
     }
   }
 
@@ -138,7 +139,7 @@ bool Cylinder::intersects(Vector origin, Vector coord) {
 
   Vector pI = origin + (d*tMin);
 
-  if (tMin > 0.0001f && inShell_(pI)) {
+  if (tMin > 0 && inShell_(pI)) {
     n_ = calcN_(pI);
     setTMin(tMin);
     return true;

@@ -7,7 +7,7 @@
 class Model {
   private:
     Color color_;
-    float shineness_; //shineness
+    double shineness_; //shineness
     bool texture_;
 
     Vector kd_;
@@ -22,13 +22,13 @@ class Model {
       Vector kd,
       Vector ke,
       Vector ka,
-      float shineness
+      double shineness
     );
 
-    Model(Color color, Vector k, float shineness);
+    Model(Color color, Vector k, double shineness);
 
     Color getColor();
-    float getShineness();
+    double getShineness();
     bool hasTexture();
 
     Vector getKd();

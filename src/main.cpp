@@ -54,19 +54,19 @@ int main() {
   Model m1 {
     Color { 255, 0, 0 },
     Vector { 0.7, 0.7, 0.7 },
-    10.0f
+    10.0
   };
 
   Model m2 {
     Color { 0, 255, 0 },
     Vector { 0.6, 0.6, 0.6 },
-    12.0f
+    12.0
   };
 
   Model m3 {
     Color { 0, 0, 255 },
     Vector { 0.5, 0.5, 0.5 },
-    13.0f
+    13.0
   };
 
   Sphere sphere1 { Vector(0, 0, -100), 10, m1 };
@@ -77,31 +77,31 @@ int main() {
 
   Vector nTest = Vector(0, 50, -50) - Vector(0, -20, -100);
 
-  ShapeConfig sc1 { Vector(0, -40, -100), Vector(0, 1, 0), 10, 20 };
+  ShapeConfig sc1 { Vector(0, -40, -100), Vector(0, 1, 0), 80, 20 };
   Cylinder cylinder1 { sc1, m3 };
 
-  // Cube cube1 { m3 };
-  // Cube cube2 { m1 };
-  // Cube cube3 { m2 };
-  // Cube cube4 { m1 };
+  Cube cube1 { m1 };
+  Cube cube2 { m1 };
+  Cube cube3 { m2 };
+  Cube cube4 { m1 };
 
-  // Matrix auxM1 = Matrix::translate(0, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
-  // Matrix auxM2 = Matrix::translate(-20, -50, -100) * Matrix::scale(10, 10, 10);
-  // Matrix auxM3 = Matrix::translate(20, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
-  // Matrix auxM4 = Matrix::translate(0, 20, -100) * Matrix::scale(10, 10, 10);
+  Matrix auxM1 = Matrix::translate(0, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
+  Matrix auxM2 = Matrix::translate(-20, -50, -100) * Matrix::scale(10, 10, 10);
+  Matrix auxM3 = Matrix::translate(20, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
+  Matrix auxM4 = Matrix::translate(0, 20, -100) * Matrix::scale(10, 10, 10);
 
-  // cube1.transform(auxM1, SCALE);
-  // cube2.transform(auxM2, SCALE);
-  // cube3.transform(auxM3, SCALE);
-  // cube4.transform(auxM4, SCALE);
+  cube1.transform(auxM1, SCALE);
+  cube2.transform(auxM2, SCALE);
+  cube3.transform(auxM3, SCALE);
+  cube4.transform(auxM4, SCALE);
 
-  // scene.push(&sphere1);
+  scene.push(&sphere1);
   scene.push(&cylinder1);
   scene.push(&plane1);
-  // scene.push(&cube1);
-  // scene.push(&cube2);
-  // scene.push(&cube3);
-  // scene.push(&cube4);
+  scene.push(&cube1);
+  scene.push(&cube2);
+  scene.push(&cube3);
+  scene.push(&cube4);
 
   // scene.push(&sphere3);
 
