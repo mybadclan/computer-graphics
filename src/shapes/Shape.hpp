@@ -4,7 +4,7 @@
 #include "../utils/Model.hpp"
 #include "../math/Matrix.hpp"
 
-enum TransformType { TRANSLATE, SCALE, SKEW, REFLECT, ROTATE };
+enum TransformType { TRANSLATE, SCALE, SKEW, REFLECT, ROTATE, MIX };
 
 class Shape {
   private:

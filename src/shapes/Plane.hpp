@@ -10,6 +10,7 @@ class Plane: public Shape {
 
   public:
     Plane();
+    Plane(Vector point, Vector n);
     Plane(Vector point, Vector n, Model model);
 
     virtual Vector surfaceNormal(Vector other) override;

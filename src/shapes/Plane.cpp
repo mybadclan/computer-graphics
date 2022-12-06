@@ -5,6 +5,11 @@ Plane::Plane(): Shape(Model()) {
   n_ = Vector();
 }
 
+Plane::Plane(Vector point, Vector n): Shape(Model()) {
+  point_ = point;
+  n_ = n;
+}
+
 Plane::Plane(Vector point, Vector n, Model model): Shape(model) {
   point_ = point;
   n_ = n;

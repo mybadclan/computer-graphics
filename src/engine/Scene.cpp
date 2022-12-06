@@ -42,11 +42,11 @@ Color Scene::paint(Vector origin, Vector coord) {
 
     if (!(*shape).intersects(origin, coord)) continue;
 
-    float* auxTMin = new float;
-    (*shape).getTMin(auxTMin);
+    float auxTMin;
+    (*shape).getTMin(&auxTMin);
 
-    if ((*auxTMin) < tMin) {
-      tMin = (*auxTMin);
+    if (auxTMin < tMin) {
+      tMin = auxTMin;
       shapeMin = shape;
     }
   }
