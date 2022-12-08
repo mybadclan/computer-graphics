@@ -5,17 +5,14 @@
 #include <iostream>
 
 Cylinder::Cylinder(): Shape(Model()) {
-  hit_ = SURFACE;
   props_ = ShapeConfig();
 }
 
 Cylinder::Cylinder(ShapeConfig props): Shape(Model()) {
-  hit_ = SURFACE;
   props_ = props;
 }
 
 Cylinder::Cylinder(ShapeConfig props, Model model): Shape(model) {
-  hit_ = SURFACE;
   props_ = props;
 }
 

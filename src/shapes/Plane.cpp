@@ -26,13 +26,13 @@ bool Plane::intersects(Vector origin, Vector coord) {
   double wn = w.dotProduct(&n_);
   double dn = d.dotProduct(&n_);
 
-  if (dn != 0.0) {
-    double t = wn / dn;
+  if (dn == 0) return false;
 
-    if (t >= 0.0) {
+  double t = wn / dn;
+
+  if (t > 0.0) {
       Shape::setTMin(t);
       return true;
-    }
   }
 
   return false;

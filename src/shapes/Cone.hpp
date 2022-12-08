@@ -1,24 +1,22 @@
-#ifndef CYLINDER_HPP
-#define CYLINDER_HPP
+#ifndef CONE_HPP
+#define CONE_HPP
 
 #include "Shape.hpp"
 #include "../utils/ShapeConfig.hpp"
 
-enum HitType { SURFACE, BASE, TOP };
-
-class Cylinder: public Shape {
+class Cone: public Shape {
   private:
     ShapeConfig props_;
     Vector n_;
 
-    bool inShell_(Vector other);
-    bool inBase_(Vector other, bool top);
     Vector calcN_(Vector other);
+    bool inShell_(Vector other);
+    bool inBase_(Vector other);
 
   public:
-    Cylinder();
-    Cylinder(ShapeConfig props);
-    Cylinder(ShapeConfig props, Model model);
+    Cone();
+    Cone(ShapeConfig props);
+    Cone(ShapeConfig props, Model model);
 
     ShapeConfig getProps();
 
