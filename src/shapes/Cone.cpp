@@ -107,19 +107,17 @@ bool Cone::intersects(Vector origin, Vector coord) {
   if (inShell_(p2) && t2 < tMin) tMin = t2;
 
   bool intersectBase = false;
-  Plane planeBase { centerBase, direction * -1 };
+  Plane planeBase { centerBase, direction };
 
   if (planeBase.intersects(origin, coord)) {
-
     double t;
     planeBase.getTMin(&t);
 
-    std::cout << "ENTROU " << t << " " <<tMin << std::endl;
 
     Vector pI = origin + (d * t);
     bool auxIntersect = inBase_(pI);
-
-    if (t > 0 && t < tMin && auxIntersect) {
+    
+    if (t > 0 && auxIntersect) {
       tMin = t; n_ = direction * -1; intersectBase = auxIntersect;
     }
   }

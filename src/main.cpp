@@ -78,7 +78,7 @@ int main() {
 
   Vector nTest = Vector(0, 50, -50) - Vector(0, -20, -100);
 
-  ShapeConfig sc1 { Vector(0, 40, -100), Vector(0, 1, 0), 40, 20 };
+  ShapeConfig sc1 { Vector(0, 20, -100), Vector(0, 1, 0), 40, 20 };
   Cone cone1 { sc1, m3 };
 
   // Cube cube1 { m1 };
