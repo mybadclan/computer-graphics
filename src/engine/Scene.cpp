@@ -42,12 +42,20 @@ void Scene::setDirectionalLS(DirectionalLS* directionalLS) {
   directionalLS_ = directionalLS;
 }
 
+void Scene::setSpotLS(SpotLS* spotLS) {
+  spotLS_ = spotLS;
+}
+
 void Scene::toggleAmbient() {
   isAmbientOn_ = !isAmbientOn_;
 }
 
 void Scene::togglePontual() {
   isPontualOn_ = !isPontualOn_;
+}
+
+void Scene::toggleSpot() {
+  isSpotOn_ = !isSpotOn_;
 }
 
 void Scene::toggleDirectional() {
@@ -130,6 +138,10 @@ Color Scene::paint(Vector origin, Vector coord) {
 
   if (isDirectionalOn_) {
     contributions = contributions + directionalLS_->iluminate(pI, d, n, model);
+  }
+
+  if (isSpotOn_) {
+    contributions = contributions + spotLS_->iluminate(pI, d, n, model);
   }
 
   return model.getColor() * contributions;

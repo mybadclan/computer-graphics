@@ -12,6 +12,7 @@
 #include "lightSource/PontualLS.hpp"
 #include "lightSource/DirectionalLS.hpp"
 #include "lightSource/AmbientLS.hpp"
+#include "lightSource/SpotLS.hpp"
 
 #include "utils/Model.hpp"
 #include "utils/Color.hpp"
@@ -126,9 +127,12 @@ int main() {
   DirectionalLS ls2 { direction.normalized(), Vector(0.7, 0.7, 0.7) };
   AmbientLS ls3 { Vector(0.4, 0.4, 0.4) };
 
+  SpotLS ls4 { Vector(0, 30, -80), Vector(0, -1, 0), Vector(0.6, 0.6, 0.4), 30.0 };
+
   scene.setPontualLS(&ls1);
   scene.setDirectionalLS(&ls2);
   scene.setAmbientLS(&ls3);
+  scene.setSpotLS(&ls4);
 
   scene.togglePontual();
   scene.toggleAmbient();
@@ -161,6 +165,13 @@ int main() {
 
       if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_k) {
         scene.toggleDirectional();
+        createImage(&scene, &canvas, pixels, WIDTH_CANVAS, HEIGHT_CANVAS);
+
+        sdlEngine.atualizarCanvas((int *)pixels);
+      }
+
+      if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_l) {
+        scene.toggleSpot();
         createImage(&scene, &canvas, pixels, WIDTH_CANVAS, HEIGHT_CANVAS);
 
         sdlEngine.atualizarCanvas((int *)pixels);

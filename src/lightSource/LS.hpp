@@ -12,6 +12,7 @@ class LS {
 
   public:
     LS(Vector id, Vector ie, Vector ia);
+    LS(Vector id, Vector ie);
     LS(Vector i);
 
     void getIntensity(Vector* id, Vector* ie, Vector* ia);
