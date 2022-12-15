@@ -19,9 +19,8 @@ Vector Plane::surfaceNormal(Vector other) {
   return n_;
 }
 
-bool Plane::intersects(Vector origin, Vector coord) {
+bool Plane::intersects(Vector origin, Vector d) {
   Vector w = point_ - origin;
-  Vector d = (coord - origin).normalized();
 
   double wn = w.dotProduct(&n_);
   double dn = d.dotProduct(&n_);

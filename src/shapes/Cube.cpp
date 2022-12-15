@@ -56,7 +56,7 @@ Vector Cube::surfaceNormal(Vector other) {
   return n_;
 }
 
-bool Cube::intersects(Vector origin, Vector coord) {
+bool Cube::intersects(Vector origin, Vector d) {
   double tMin = std::numeric_limits<double>::max();
   bool intersected = false;
   Vector intersectedNormal = Vector();
@@ -77,7 +77,6 @@ bool Cube::intersects(Vector origin, Vector coord) {
 
     Vector n = r1xr2.normalized();
     Plane plane { p0, n, Model() };
-    Vector d = (coord - origin).normalized();
 
     if (plane.intersects(origin, d)) {
       double* auxTMin = new double;

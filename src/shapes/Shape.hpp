@@ -11,6 +11,7 @@ class Shape {
     Model model_;
     double tMin_;
 
+
   public:
     Shape();
     Shape(Model model);
@@ -22,7 +23,7 @@ class Shape {
     virtual Vector surfaceNormal(Vector other);
 
     virtual bool isValid();
-    virtual bool intersects(Vector origin, Vector coord);
+    virtual bool intersects(Vector origin, Vector d);
     virtual void transform(Matrix matrix, TransformType tType);
 
 };

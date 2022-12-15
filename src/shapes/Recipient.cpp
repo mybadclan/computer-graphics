@@ -1,21 +1,20 @@
-#include "Cylinder.hpp"
+#include "Recipient.hpp"
 #include "Plane.hpp"
 #include <cmath>
 
-Cylinder::Cylinder(): Shape(Model()) {
+Recipient::Recipient(): Shape(Model()) {
   props_ = ShapeConfig();
 }
 
-Cylinder::Cylinder(ShapeConfig props): Shape(Model()) {
+Recipient::Recipient(ShapeConfig props): Shape(Model()) {
   props_ = props;
 }
 
-Cylinder::Cylinder(ShapeConfig props, Model model): Shape(model) {
+Recipient::Recipient(ShapeConfig props, Model model): Shape(model) {
   props_ = props;
 }
 
-
-bool Cylinder::inShell_(Vector other) {
+bool Recipient::inShell_(Vector other) {
   Vector centerBase = props_.getCenterBase();
   Vector direction = props_.getDirection();
   double height = props_.getHeight();
@@ -23,7 +22,7 @@ bool Cylinder::inShell_(Vector other) {
   return aux >= 0 && aux <= height;
 }
 
-bool Cylinder::inBase_(Vector other, bool top) {
+bool Recipient::inBase_(Vector other, bool top) {
   Vector centerBase = props_.getCenterBase();
   Vector direction = props_.getDirection();
   double height, radius;
@@ -37,7 +36,7 @@ bool Cylinder::inBase_(Vector other, bool top) {
   return size <= radius;
 }
 
-Vector Cylinder::calcN_(Vector other) {
+Vector Recipient::calcN_(Vector other) {
   Vector direction = props_.getDirection();
   Vector centerBase = props_.getCenterBase();
 
@@ -47,21 +46,27 @@ Vector Cylinder::calcN_(Vector other) {
   return (cp - ca).normalized();
 }
 
-ShapeConfig Cylinder::getProps() {
+ShapeConfig Recipient::getProps() {
   return props_;
 }
 
-Vector Cylinder::surfaceNormal(Vector other) {
+void Recipient::pushShape(Shape* shape) {
+  shapes_.push_back(shape);
+}
+
+Vector Recipient::surfaceNormal(Vector other) {
   return n_;
 }
 
-bool Cylinder::intersects(Vector origin, Vector d) {
+bool Recipient::intersectsCylinder_(Vector origin, Vector coord) {
   double height, radius;
   props_.getScalarProps(&height, &radius);
 
   Vector direction = props_.getDirection();
   Vector centerBase = props_.getCenterBase();
   Vector centerTop  = centerBase + (direction * height);
+
+  Vector d = (coord - origin).normalized();
 
   Vector v = (origin - centerBase) - (direction * (origin - centerBase).dotProduct(&direction));
   Vector w = d - (direction * d.dotProduct(&direction));
@@ -103,7 +108,7 @@ bool Cylinder::intersects(Vector origin, Vector d) {
   Plane planeBase { centerBase, direction * -1 };
   Plane planeTop  { centerTop, direction };
 
-  if (planeBase.intersects(origin, d)) {
+  if (planeBase.intersects(origin, coord)) {
     double t;
     planeBase.getTMin(&t);
 
@@ -114,7 +119,7 @@ bool Cylinder::intersects(Vector origin, Vector d) {
     }
   }
 
-  if (planeTop.intersects(origin, d)) {
+  if (planeTop.intersects(origin, coord)) {
     double t;
     planeTop.getTMin(&t);
 
@@ -141,6 +146,46 @@ bool Cylinder::intersects(Vector origin, Vector d) {
   return false;
 }
 
-void Cylinder::transform(Matrix matrix, TransformType tType) {
+bool Recipient::intersects(Vector origin, Vector coord) {
+  if (intersectsCylinder_(origin, coord)) {
+    vector<int> ts;
+
+    for(int i=0; i<(int)shapes_.size(); i+=1) {
+      Shape* shape = shapes_.at(i);
+
+      if (shape->intersects(origin, coord)) {
+        ts.push_back(i);
+      }
+    }
+
+    if (ts.size() == 0) return false;
+
+    int minPos = ts.at(0);
+    Shape* shapeMin = shapes_.at(minPos);
+
+    double tMin;
+    shapeMin->getTMin(&tMin);
+
+    for (int i=1;i<(int)ts.size();i+=1) {
+      int pos = ts.at(i);
+      Shape* shape = shapes_.at(pos);
+
+      double t;
+      shape->getTMin(&t);
+
+      if (t < tMin) {
+        tMin = t;
+        shapeMin = shape;
+      }
+    }
+
+    setTMin(tMin);
+    return true;
+  }
+
+  return false;
+}
+
+void Recipient::transform(Matrix matrix, TransformType tType) {
 
 }

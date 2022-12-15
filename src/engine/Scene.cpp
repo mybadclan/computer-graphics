@@ -11,12 +11,55 @@ Scene::Scene(Ray ray) {
   ray_ = ray;
 }
 
-std::vector<Shape*> Scene::getShapes() {
-  return shapes_;
+bool Scene::hasShadow_(PontualLS* ls, Vector p) {
+  Vector d = (ls->getPosition() - p).normalized();
+  vector<int> ts;
+
+  for (int i=0; i<(int)shapes_.size(); i+=1) {
+    Shape* shape = shapes_.at(i);
+
+    if ((*shape).intersects(p, d)) {
+      ts.push_back(i);
+    }
+  }
+
+  if(ts.size() == 0) {
+    return false;
+  }
+
+  return true;
 }
 
-std::vector<LS*> Scene::getLightSources() {
-  return lightSources_;
+void Scene::setAmbientLS(AmbientLS* ambientLS) {
+  ambientLS_ = ambientLS;
+}
+
+void Scene::setPontualLS(PontualLS* pontualLS) {
+  pontualLS_ = pontualLS;
+}
+
+void Scene::setDirectionalLS(DirectionalLS* directionalLS) {
+  directionalLS_ = directionalLS;
+}
+
+void Scene::toggleAmbient() {
+  isAmbientOn_ = !isAmbientOn_;
+}
+
+void Scene::togglePontual() {
+  isPontualOn_ = !isPontualOn_;
+}
+
+void Scene::toggleDirectional() {
+  isDirectionalOn_ = !isDirectionalOn_;
+}
+
+void Scene::toggleOrthogonalVision() {
+  isOrthogonal_ = !isOrthogonal_;
+}
+
+std::vector<Shape*> Scene::getShapes() {
+  return shapes_;
 }
 
 Ray Scene::getRay() {
@@ -27,11 +70,9 @@ void Scene::push(Shape* shape) {
   shapes_.push_back(shape);
 }
 
-void Scene::pushLightSource(LS* ls) {
-  lightSources_.push_back(ls);
-}
-
 Color Scene::paint(Vector origin, Vector coord) {
+  Vector O = isOrthogonal_ ? coord : origin;
+  Vector d = isOrthogonal_ ? Vector(0, 0, -1) : (coord - origin).normalized();
 
   // calculating closest shape
   vector<int> ts;
@@ -39,7 +80,7 @@ Color Scene::paint(Vector origin, Vector coord) {
   for (int i=0; i<(int)shapes_.size(); i+=1) {
     Shape* shape = shapes_.at(i);
 
-    if ((*shape).intersects(origin, coord)) {
+    if ((*shape).intersects(O, d)) {
       ts.push_back(i);
     }
   }
@@ -72,18 +113,24 @@ Color Scene::paint(Vector origin, Vector coord) {
 
   // calculate light source contribution
 
-  Vector d = (coord - origin).normalized();
   Vector pI = origin + (d * tMin);
 
   Model model = (*shapeMin).getModel();
-  Color contributions;
+  Vector contributions = Vector();
 
-  for (int i=0; i < (int) lightSources_.size(); i+=1) {
-    LS* ls = lightSources_.at(i);
-    Vector n = (*shapeMin).surfaceNormal(pI);
-
-    contributions = (*ls).iluminate(pI, d, n, model);
+  Vector n = (*shapeMin).surfaceNormal(pI);
+  
+  if (isAmbientOn_) {
+    contributions = contributions + ambientLS_->iluminate(pI, d, n, model);
   }
 
-  return contributions;
+  if (isPontualOn_) {
+    contributions = contributions + pontualLS_->iluminate(pI, d, n, model);
+  }
+
+  if (isDirectionalOn_) {
+    contributions = contributions + directionalLS_->iluminate(pI, d, n, model);
+  }
+
+  return model.getColor() * contributions;
 }

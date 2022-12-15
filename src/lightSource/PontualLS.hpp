@@ -11,7 +11,9 @@ class PontualLS: public LS {
     PontualLS(Vector position, Vector id, Vector ie, Vector ia);
     PontualLS(Vector position, Vector i);
 
-    virtual Color iluminate(Vector pI, Vector d, Vector n, Model model) override;
+    Vector getPosition();
+
+    virtual Vector iluminate(Vector pI, Vector d, Vector n, Model model) override;
 };
 
 #endif

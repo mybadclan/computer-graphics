@@ -10,6 +10,8 @@
 #include "math/Matrix.hpp"
 
 #include "lightSource/PontualLS.hpp"
+#include "lightSource/DirectionalLS.hpp"
+#include "lightSource/AmbientLS.hpp"
 
 #include "utils/Model.hpp"
 #include "utils/Color.hpp"
@@ -21,7 +23,10 @@
 #include "shapes/Cube.hpp"
 #include "shapes/Cylinder.hpp"
 #include "shapes/Cone.hpp"
+#include "shapes/Recipient.hpp"
 #include "shapes/Ray.hpp"
+
+#include "image.hpp"
 
 #define WIDTH_CANVAS 800
 #define HEIGHT_CANVAS 800
@@ -47,7 +52,7 @@ int main() {
   for (int i = 0; i < CANVAS_ARRAY_SIZE; i++)
     pixels[i] = Color();
 
-  Window window { 60, 60, -30 };
+  Window window { 200, 200, -30 };
   Canvas canvas { window, WIDTH_CANVAS, HEIGHT_CANVAS };
   Ray ray { Vector(0, 0, 0), Color(100, 100, 100) };
   Scene scene { ray };
@@ -70,57 +75,65 @@ int main() {
     13.0
   };
 
-  Sphere sphere1 { Vector(0, 0, -100), 10, m1 };
-  Sphere sphere2 { Vector(0, 0, -120), 15, m2 };
-  Sphere sphere3 { Vector(0, 0, -150), 15, m3 };
+  Sphere sphere1 { Vector(0, 30, -30), 10, m1 };
 
   Plane plane1 { Vector(0, -50, 0), Vector(0, 1, 0), m2 };
 
-  Vector nTest = Vector(0, 50, -50) - Vector(0, -20, -100);
+  ShapeConfig sc1 { Vector(0, -40, -50), Vector(0, 1, 0), 5, 20 };
+  Cylinder cylinder1 { sc1, m1 };
+  Cone cone1 { sc1, m2 };
 
-  ShapeConfig sc1 { Vector(0, 20, -100), Vector(0, 1, 0), 40, 20 };
-  Cone cone1 { sc1, m3 };
+  Cube cube1 { m1 };
+  Cube cube2 { m1 };
+  Cube cube3 { m1 };
+  Cube cube4 { m1 };
+  Cube cube5 { m1 };
 
-  // Cube cube1 { m1 };
-  // Cube cube2 { m1 };
-  // Cube cube3 { m2 };
-  // Cube cube4 { m1 };
+  ShapeConfig sc2 { Vector(0, -50, -90), Vector(0, 1, 0), 50, 50 };
+  Recipient recipient1 { sc2, m1 };
 
-  // Matrix auxM1 = Matrix::translate(0, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
-  // Matrix auxM2 = Matrix::translate(-20, -50, -100) * Matrix::scale(10, 10, 10);
-  // Matrix auxM3 = Matrix::translate(20, -50, -100) * Matrix::scale(10, 10, 10) * Matrix::rotateY(45);
-  // Matrix auxM4 = Matrix::translate(0, 20, -100) * Matrix::scale(10, 10, 10);
+  // Matrix auxM1 = Matrix::translate(-10, -50, -40) * Matrix::scale(5, 20, 5);
+  // Matrix auxM2 = Matrix::translate(10, -50, -40) * Matrix::scale(5, 20, 5);
+  // Matrix auxM3 = Matrix::translate(-10, -50, -60) * Matrix::scale(5, 20, 5);
+  // Matrix auxM4 = Matrix::translate(10, -50, -60) * Matrix::scale(5, 20, 5);
+  // Matrix auxM5 = Matrix::translate(-6, -20, -20) * Matrix::scale(15, 2, 15);
+
 
   // cube1.transform(auxM1, SCALE);
   // cube2.transform(auxM2, SCALE);
   // cube3.transform(auxM3, SCALE);
   // cube4.transform(auxM4, SCALE);
+  // cube5.transform(auxM5, SCALE);
 
-  // scene.push(&sphere1);
-  scene.push(&cone1);
+  // recipient1.pushShape(&cube1);
+  // recipient1.pushShape(&cube2);
+  // recipient1.pushShape(&cube3);
+  // recipient1.pushShape(&cube4);
+  // recipient1.pushShape(&cube5);
+
+  scene.push(&sphere1);
+  scene.push(&cylinder1);
   scene.push(&plane1);
   // scene.push(&cube1);
   // scene.push(&cube2);
   // scene.push(&cube3);
   // scene.push(&cube4);
+  // scene.push(&recipient1);
 
-  // scene.push(&sphere3);
+  Vector direction =  Vector(0, 135, 300).normalized();
 
-  PontualLS ls1 { Vector(-100, 140, -20), Vector(0.7, 0.7, 0.7) };
+  PontualLS ls1 { Vector(100, 140, -20), Vector(0.7, 0.7, 0.7) };
+  DirectionalLS ls2 { direction.normalized(), Vector(0.7, 0.7, 0.7) };
+  AmbientLS ls3 { Vector(0.4, 0.4, 0.4) };
 
-  scene.pushLightSource(&ls1);
+  scene.setPontualLS(&ls1);
+  scene.setDirectionalLS(&ls2);
+  scene.setAmbientLS(&ls3);
 
-  for (int x = 0; x < WIDTH_CANVAS; x+=1) {
-    for (int y = 0; y < HEIGHT_CANVAS; y+=1) {
-      Vector coord = canvas.toWindow(Vector(x, y));
-      Vector origin = scene.getRay().getCamera();
+  scene.togglePontual();
+  scene.toggleAmbient();
 
-      Color color = scene.paint(origin, coord);
-      int pos = x + (HEIGHT_CANVAS * y);
-
-      pixels[pos] = color;
-    }
-  }
+  createImage(&scene, &canvas, pixels, WIDTH_CANVAS, HEIGHT_CANVAS);
 
   sdlEngine.atualizarCanvas((int *) pixels);
 
@@ -128,8 +141,30 @@ int main() {
   {
     while (SDL_PollEvent(&event))
     {
-      if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT) {
         quit = true;
+      }
+
+      if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_o) {
+        scene.toggleOrthogonalVision();
+        createImage(&scene, &canvas, pixels, WIDTH_CANVAS, HEIGHT_CANVAS);
+
+        sdlEngine.atualizarCanvas((int *)pixels);
+      }
+
+      if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_j) {
+        scene.togglePontual();
+        createImage(&scene, &canvas, pixels, WIDTH_CANVAS, HEIGHT_CANVAS);
+
+        sdlEngine.atualizarCanvas((int *)pixels);
+      }
+
+      if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_k) {
+        scene.toggleDirectional();
+        createImage(&scene, &canvas, pixels, WIDTH_CANVAS, HEIGHT_CANVAS);
+
+        sdlEngine.atualizarCanvas((int *)pixels);
+      }
     }
 
     // sdlEngine.atualizarCanvas((int *)pixels);

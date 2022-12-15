@@ -6,11 +6,16 @@ PontualLS::PontualLS(Vector position, Vector id, Vector ie, Vector ia): LS(id, i
 
 PontualLS::PontualLS(Vector position, Vector i): LS(i), position_(position) {}
 
-Color PontualLS::iluminate(Vector pI, Vector d, Vector n, Model model) {
-  Vector id, ie, ia;
-  LS::getIntensity(&id, &ie, &ia);
+Vector PontualLS::getPosition() {
+  return position_;
+}
 
-  Vector ambt = ia * model.getKa();
+Vector PontualLS::iluminate(Vector pI, Vector d, Vector n, Model model) {
+  Vector id, ie, ia;
+
+  getIntensity(&id, &ie, &ia);
+
+  // Vector ambt = ia * model.getKa();
 
   Vector l = (position_ - pI).normalized();
   double ln = l.dotProduct(&n);
@@ -22,5 +27,5 @@ Color PontualLS::iluminate(Vector pI, Vector d, Vector n, Model model) {
   double auxMax = std::pow(std::max(0.0, rv), model.getShineness());
   Vector spclr = (ie * model.getKe()) * auxMax;
 
-  return (model.getColor()) * (ambt + dfs + spclr);
+  return dfs + spclr;
 }

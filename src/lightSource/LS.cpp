@@ -9,6 +9,15 @@ void LS::getIntensity(Vector* id, Vector* ie, Vector* ia) {
   *ia = ia_;
 }
 
-Color LS::iluminate(Vector pI, Vector d, Vector n, Model model) {
-  return Color();
+void LS::getIntensity(Vector* id, Vector* ie) {
+  *id = id_;
+  *ie = ie_;
+}
+
+void LS::getIntensity(Vector* ia) {
+  *ia = ia_;
+}
+
+Vector LS::iluminate(Vector pI, Vector d, Vector n, Model model) {
+  return Vector();
 }

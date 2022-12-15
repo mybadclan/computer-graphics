@@ -57,15 +57,13 @@ Vector Cone::surfaceNormal(Vector other) {
   return n_;
 }
 
-bool Cone::intersects(Vector origin, Vector coord) {
+bool Cone::intersects(Vector origin, Vector d) {
   Vector centerBase = props_.getCenterBase();
   Vector direction = props_.getDirection();
   double height, radius;
   props_.getScalarProps(&height, &radius);
 
   Vector centerTop = centerBase + (direction * height);
-  Vector d = (coord - origin).normalized();
-
   Vector v = centerTop - origin;
 
   double dn = d.dotProduct(&direction);
@@ -109,7 +107,7 @@ bool Cone::intersects(Vector origin, Vector coord) {
   bool intersectBase = false;
   Plane planeBase { centerBase, direction };
 
-  if (planeBase.intersects(origin, coord)) {
+  if (planeBase.intersects(origin, d)) {
     double t;
     planeBase.getTMin(&t);
 

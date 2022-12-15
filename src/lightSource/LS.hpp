@@ -15,8 +15,10 @@ class LS {
     LS(Vector i);
 
     void getIntensity(Vector* id, Vector* ie, Vector* ia);
+    void getIntensity(Vector* id, Vector* ie);
+    void getIntensity(Vector* ia);
 
-    virtual Color iluminate(Vector pI, Vector d, Vector n, Model model);
+    virtual Vector iluminate(Vector pI, Vector d, Vector n, Model model);
 };
 
 #endif

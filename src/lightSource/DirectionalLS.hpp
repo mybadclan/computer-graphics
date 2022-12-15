@@ -11,7 +11,7 @@ class DirectionalLS: public LS {
     DirectionalLS(Vector direction, Vector id, Vector ie, Vector ia);
     DirectionalLS(Vector direction, Vector i);
 
-    virtual Color iluminate(Vector pI, Vector d, Vector n, Model model) override;
+    virtual Vector iluminate(Vector pI, Vector d, Vector n, Model model) override;
 };
 
 #endif

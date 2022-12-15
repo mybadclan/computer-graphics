@@ -21,7 +21,7 @@ class Cone: public Shape {
     ShapeConfig getProps();
 
     virtual Vector surfaceNormal(Vector other) override;
-    virtual bool intersects(Vector origin, Vector coord) override;
+    virtual bool intersects(Vector origin, Vector d) override;
     virtual void transform(Matrix matrix, TransformType tType) override;
 };
 

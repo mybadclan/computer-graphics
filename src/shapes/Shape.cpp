@@ -28,7 +28,7 @@ bool Shape::isValid() {
   return true;
 }
 
-bool Shape::intersects(Vector origin, Vector coord) {
+bool Shape::intersects(Vector origin, Vector d) {
   return false;
 }
 

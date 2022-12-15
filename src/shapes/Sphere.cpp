@@ -28,10 +28,8 @@ bool Sphere::isValid() {
   return true;
 }
 
-bool Sphere::intersects(Vector origin, Vector coord) {
+bool Sphere::intersects(Vector origin, Vector d) {
   Vector w = origin - center_;
-
-  Vector d = (coord - origin).normalized();
 
   // a = 1
   double b = 2*d.dotProduct(&w);
